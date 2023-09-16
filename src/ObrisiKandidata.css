@@ -1,64 +1,30 @@
-.delete-container{
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    background-color: #fff;
-  }
-  
-  /* Style for the candidate table heading */
-  /* h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
+.delete-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+  width: 70%;
+  max-width: 600px;
+  margin: 0 auto;
+}
 
-  button {
-    background-color: #ff5722;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
+.custom-button {
+  background-color: #156cb459; /* Change to the color you prefer */
+  color: white; /* Text color */
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px; /* Adjust the font size as needed */
+}
 
-  th {
-    background-color: #333;
-    color: #fff;
-    font-weight: bold;
-    padding: 10px;
-  }
+.custom-button:hover {
+  background-color: #e63900; /* Change to the hover color you prefer */
+}
   
-
-  td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: center;
-  }
-  
-
-  tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  
-
-  input[type="checkbox"] {
-    margin: 0 auto;
-    display: block;
-  }
-  
-
-  input[type="checkbox"]:checked {
-    background-color: #ff5722;
-    border-color: #ff5722;
-  } */

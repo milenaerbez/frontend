@@ -1,7 +1,7 @@
 import { useState,useEffect } from "react";
 import React from "react";
 import axios from "axios";
-//import "./ObrisiKandidata.css"
+import "./ObrisiKandidata.css"
 
 
 
@@ -11,32 +11,32 @@ function FrmObrisiKandidata() {
   
 
 
-  const handleDeleteClick = async () => {
-    try {
+  // const handleDeleteClick = async () => {
+  //   try {
      
-      await Promise.all(selectedCandidates.map((candidate) => axios.delete(`/kandidat/${candidate.id}`)));
+  //     await Promise.all(selectedCandidates.map((candidate) => axios.delete(`/kandidat/${candidate.id}`)));
 
      
-      alert('Kandidat uspesno obrisan');
-      setCandidates((prevCandidates) =>
-      prevCandidates.filter((candidate) => !selectedCandidates.includes(candidate))
-    );
-      setSelectedCandidates([]); 
-    } catch (error) {
-      console.error('Error deleting candidates:', error);
-    }
-  };
+  //     alert('Kandidat uspesno obrisan');
+  //     setCandidates((prevCandidates) =>
+  //     prevCandidates.filter((candidate) => !selectedCandidates.includes(candidate))
+  //   );
+  //     setSelectedCandidates([]); 
+  //   } catch (error) {
+  //     console.error('Error deleting candidates:', error);
+  //   }
+  // };
 
-  const handleCheckboxChange = (candidate) => {
+  // const handleCheckboxChange = (candidate) => {
     
-    setSelectedCandidates((prevSelected) => {
-      if (prevSelected.includes(candidate)) {
-        return prevSelected.filter((c) => c !== candidate);
-      } else {
-        return [...prevSelected, candidate];
-      }
-    });
-  };
+  //   setSelectedCandidates((prevSelected) => {
+  //     if (prevSelected.includes(candidate)) {
+  //       return prevSelected.filter((c) => c !== candidate);
+  //     } else {
+  //       return [...prevSelected, candidate];
+  //     }
+  //   });
+  // };
 
 
   useEffect(() => {
@@ -44,16 +44,42 @@ function FrmObrisiKandidata() {
     axios.get('/kandidat')
       .then((response) => {
       
-        setCandidates(response.data.candidates);
+        setCandidates(response.data);
       })
       .catch((error) => {
         console.error('Error fetching candidates:', error);
       });
   }, []);
 
+  const handleRemoveCandidate = async (candidateId) => {
+    try {
+    
+    const response=  await axios.delete(`/kandidat/${candidateId}`);
+      
+      if(response.status===201){
+        alert('Uspesno '+ response.data.message);
+      }else if(response.status===500){
+        alert('Ne mozete obrisati kandidata koji ima ugovor');
+      }
+      
+  
+      setCandidates((prevCandidates) =>
+        prevCandidates.filter((candidate) => candidate.id !== candidateId)
+      );
+    } catch (error) {
+      alert('Ne mozete obrisati kandidata koji ima ugovor',error);
+    }
+  };
+  
+  
+  
+  
+  
+  
+
   return (
     <div className="delete-container">
-      <h2>Kandidati</h2>
+      {/* <h2>Kandidati</h2> */}
       
       <table>
         <thead>
@@ -62,7 +88,8 @@ function FrmObrisiKandidata() {
             <th>Ime</th>
             <th>Prezime</th>
             <th>JMBG</th>
-            <th>Zvanje</th>
+            <th>Kontakt</th>
+            <th>Mesto</th>
             <th>Obriši</th> 
             
           </tr>
@@ -74,19 +101,18 @@ function FrmObrisiKandidata() {
               <td>{candidate.Ime}</td>
               <td>{candidate.Prezime}</td>
               <td>{candidate.JMBG}</td>
+             
               <td>{candidate.Zvanje}</td>
+              <td>{candidate.grad.naziv}</td>
+              
               <td>
-                <input
-                  type="checkbox"
-                  checked={selectedCandidates.includes(candidate)}
-                  onChange={() => handleCheckboxChange(candidate)}
-                />
-              </td>
+        <button className="custom-button" onClick={() => handleRemoveCandidate(candidate.id)}>Obrisi</button>
+      </td>
              
             </tr>
           ))}
         </tbody>
-        <button onClick={handleDeleteClick}>Obriši označene</button>
+        
       </table>
     </div>
   );

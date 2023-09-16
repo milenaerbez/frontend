@@ -100,7 +100,7 @@ function FrmIzmeniKandidata() {
     axios.get('/kandidat')
       .then((response) => {
         // prikaz
-        setCandidates(response.data.candidates);
+        setCandidates(response.data);
       })
       .catch((error) => {
         console.error('Error fetching candidates:', error);
@@ -108,6 +108,7 @@ function FrmIzmeniKandidata() {
   }, []);
 
   const handleCandidateClick = (candidate) => {
+    console.log(candidate);
     setSelectedCandidate(candidate);
     setIme(candidate.Ime);
     setPrezime(candidate.Prezime);
@@ -147,12 +148,15 @@ function FrmIzmeniKandidata() {
       };
   
       ///put obavezno
-      await axios.put(`/kandidat/${selectedCandidate.id}`, updatedCandidate);
+      const response=await axios.put(`/kandidat/${selectedCandidate.id}`, updatedCandidate);
+if(response.status===201){
+  alert('Kandidat uspešno izmenjen!');
+}
   
      
-      alert('Kandidat uspešno izmenjen!');
+      
     } catch (error) {
-      console.error('Error updating Kandidat:', error);
+      alert('Error updating Kandidat:', error);
     }
   };
 
@@ -166,7 +170,7 @@ function FrmIzmeniKandidata() {
             <th>Ime</th>
             <th>Prezime</th>
             <th>JMBG</th>
-            <th>Zvanje</th>
+            <th>Kontakt</th>
           </tr>
         </thead>
         <tbody>
@@ -186,7 +190,9 @@ function FrmIzmeniKandidata() {
         </tbody>
       </table>
       {selectedCandidate && (
+        
         <form>
+          <div className='form-row'>
           <div className="form-group">
             <label>Ime:</label>
             <input
@@ -203,6 +209,8 @@ function FrmIzmeniKandidata() {
               onChange={(e) => setPrezime(e.target.value)}
             />
           </div>
+          </div>
+          <div className='form-row'>
           <div className="form-group">
             <label>JMBG:</label>
             <input
@@ -212,13 +220,15 @@ function FrmIzmeniKandidata() {
             />
           </div>
           <div className="form-group">
-            <label>Zvanje:</label>
+            <label>Kontakt:</label>
             <input
               type="text"
               value={zvanje}
               onChange={(e) => setZvanje(e.target.value)}
             />
           </div>
+          </div>
+          <div className='form-row'>
           <div className="form-group">
             <label>Drzava:</label>
   <select onChange={(e) => setSelectedDrzava(e.target.value)} value={selectedDrzava}>
@@ -241,6 +251,8 @@ function FrmIzmeniKandidata() {
               ))}
             </select>
           </div>
+          </div>
+          <div className='form-row'>
           <div className="form-group">
             <label>Ulica:</label>
             <select onChange={(e) => setSelectedAdresa(e.target.value)}>
@@ -256,7 +268,7 @@ function FrmIzmeniKandidata() {
             <label>Kucni broj:</label>
             <input type="text" value={kucniBroj} onChange={(e) => setKucniBroj(e.target.value)} />
           </div>
-          
+          </div>
           <button type="button" onClick={handleUpdateCandidate}>
             Sačuvaj izmenu
           </button>

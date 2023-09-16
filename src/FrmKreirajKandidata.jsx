@@ -19,6 +19,7 @@ const [prezime, setPrezime] = useState("");
 const [jmbg, setJmbg] = useState("");
 const [zvanje, setZvanje] = useState("");
 const [kucniBroj, setKucniBroj] = useState("");
+
   useEffect(() => {
    
    
@@ -65,6 +66,7 @@ const fetchAdrese = async(gradId)=>{
   };
 
 //cuvanje kandidata
+
 const kandidatData = {
   Ime: ime,
   Prezime: prezime,
@@ -80,10 +82,12 @@ const kandidatData = {
 const handleSacuvajClick = async () => {
   try {
 
-    await axios.post('/kandidat', kandidatData);
-
-   
-    alert('Kandidat uspesno sacuvan!');
+    const response= await axios.post('/kandidat', kandidatData);
+if(response.status===201){
+  alert('Uspesno '+response.data.message);
+}
+  
+  
     setIme("");
     setPrezime("");
     setJmbg("");
@@ -91,7 +95,7 @@ const handleSacuvajClick = async () => {
     setKucniBroj("");
     
   } catch (error) {
-    console.error('Error saving Kandidat:',kandidatData, error);
+    alert('Error kod cuvanja Kandidata',kandidatData, error);
   }
 };
 
@@ -101,29 +105,40 @@ const handleSacuvajClick = async () => {
     <div className="container-kandidat">
       <h2>Kreiranje Kandidata</h2>
       <form>
+        <div className='form-row'>
         <div className="form-group">
           <label>Ime:</label>
           <input
             type="text"   value={ime}
             onChange={(e) => setIme(e.target.value)}
+            required
           />
         </div>
+        
         <div className="form-group">
           <label>Prezime:</label>
           <input type="text"   value={prezime}
-  onChange={(e) => setPrezime(e.target.value)}  />
+  onChange={(e) => setPrezime(e.target.value)}
+  required  />
+</div>
         </div>
+        <div className='form-row'>
         <div className="form-group">
           <label>JMBG:</label>
           <input type="text"  value={jmbg}
-  onChange={(e) => setJmbg(e.target.value)}  />
+  onChange={(e) => setJmbg(e.target.value)} 
+  required />
         </div>
        
         <div className="form-group">
-          <label>Zvanje:</label>
+          <label>Kontakt:</label>
           <input type="text"   value={zvanje}
-  onChange={(e) => setZvanje(e.target.value)}  />
+  onChange={(e) => setZvanje(e.target.value)}
+  required
+  />
         </div>
+        </div>
+        <div className='form-row'>
         <div className="form-group">
           <label>Drzava:</label>
           
@@ -147,6 +162,8 @@ const handleSacuvajClick = async () => {
     ))}
   </select>
 </div>
+</div>
+<div className='form-row'>
 <div className="form-group">
   <label>Ulica:</label>
   <select onChange={(e) => setSelectedAdresa(e.target.value)}>
@@ -162,6 +179,7 @@ const handleSacuvajClick = async () => {
           <label>Kucni broj:</label>
           <input type="text"   value={kucniBroj}
   onChange={(e) => setKucniBroj(e.target.value)} />
+        </div>
         </div>
         <button type="button" onClick={handleSacuvajClick}>
           Sačuvaj
