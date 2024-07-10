@@ -1,7 +1,7 @@
 import { useState,useEffect } from "react";
 import React from "react";
 import axios from "axios";
-import "./ObrisiKandidata.css"
+import  "./ObrisiKandidata.css";
 
 
 
@@ -102,7 +102,7 @@ function FrmObrisiKandidata() {
               <td>{candidate.Prezime}</td>
               <td>{candidate.JMBG}</td>
              
-              <td>{candidate.Zvanje}</td>
+              <td>{candidate.Kontakt}</td>
               <td>{candidate.grad.naziv}</td>
               
               <td>

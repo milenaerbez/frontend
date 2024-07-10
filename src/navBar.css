@@ -110,5 +110,8 @@ padding:30px;
     align-items: center;
     height: 100vh; /* Optional: Makes the parent container take the full viewport height */
  
+    .actions-div{
+    
+    }
  
   

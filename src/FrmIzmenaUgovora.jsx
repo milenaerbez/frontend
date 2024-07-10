@@ -55,8 +55,6 @@ function FrmIzmenaUgovora() {
     }
 
 const pretrazi=async()=>{
-
- 
   try{
    if(kriterijum===''){
     axios.get('/ugovor')
@@ -129,7 +127,6 @@ const removeStavka = (indexToRemove) => {
           id:selektovanUgovor.id,
           sadrzaj:sadrzaj,
           };
-
           const updatedStavke = stavkeUgovora
           .filter((stavka) => stavka.ugovor_id === selektovanUgovor.id)
           .map((stavka) => ({
@@ -137,43 +134,31 @@ const removeStavka = (indexToRemove) => {
             ugovor_id: stavka.ugovor_id, // dodajem ugovor_id zbog primarnog kljuca
             sadrzaj: stavka.sadrzaj,
           }));
-
-         
-       
-      
           const deletedStavkeFormatted = deletedStavke.map((deletedStavka) => ({
             id: deletedStavka.id,
             ugovor_id: deletedStavka.ugovor_id,
             sadrzaj: deletedStavka.sadrzaj,
           }));
-          
           const nove=noveStavke.map((novaStavka)=>({
             id:novaStavka.id ,
             ugovor_id: novaStavka.ugovor_id,
             sadrzaj: novaStavka.sadrzaj,
             clan_id: novaStavka.clan_id,
             zakonik_id: novaStavka.zakonik_id,
-          
-            
-
           }));
-
-          
           const data = {
             ugovor: updatedUgovor,
             stavke: updatedStavke,
             deletedStavke: deletedStavkeFormatted,
             addedStavke:nove
-        
           };
-          
       console.log(data);
           ///put obavezno
        const response=   await axios.put(`/ugovor/${selektovanUgovor.id}`, data);
-
-          // alert('Uspesno: 'response.data.message);
           if(response.status===201){
             alert('Uspesno'+ response.data.message);
+            fetchStavkeForSelectedUgovor(selektovanUgovor.id);
+            setNoveStavke([]);
           }
         setSelektovanUgovor(null);
         axios.get('/ugovor')
@@ -186,6 +171,7 @@ const removeStavka = (indexToRemove) => {
         });
         } catch (error) {
           console.error('Error updating Ugovor:', error);
+          alert("Greska kod izmene ugovora");
         }
       };
 

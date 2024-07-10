@@ -39,15 +39,12 @@ const requestData = {
 const saveUgovorAndStavke = async (e) => {
   e.preventDefault();
 
-
 try {
   const response = await axios.post('/ugovor', requestData);
-
   if (response.status === 201) {
    
     alert('Uspesno: ' + response.data.message);
-  } 
-   
+  }   
 } catch (error) {
   console.error('Error:', error);
   if (error.response) {
@@ -63,8 +60,6 @@ try {
 }
 
  
-
-
 
 
 
@@ -167,7 +162,7 @@ const removeStavka = (indexToRemove) => {
       </div>
       </form>
       <div>
-      
+      <hr />
       <div className="stavke-container">
         <form className='stavke-form'>
         <h3>Stavke Ugovora</h3>

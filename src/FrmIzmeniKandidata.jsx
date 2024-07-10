@@ -15,7 +15,7 @@ function FrmIzmeniKandidata() {
   const [ime, setIme] = useState('');
   const [prezime, setPrezime] = useState('');
   const [jmbg, setJmbg] = useState('');
-  const [zvanje, setZvanje] = useState('');
+  const [kontakt, setKontakt] = useState('');
   const [kucniBroj, setKucniBroj] = useState('');
 
   const [candidates, setCandidates] = useState([]);
@@ -26,7 +26,7 @@ function FrmIzmeniKandidata() {
   const [selectedDrzavaData, setSelectedDrzavaData] = useState(null);
 
   useEffect(() => {
-   
+    fetchCandidates();
     fetchDrzave();
   }, []);
 
@@ -73,6 +73,7 @@ function FrmIzmeniKandidata() {
     try {
       const response = await axios.get(`/adresa/${adresaId}`);
       setSelectedAdresaData(response.data);
+
     } catch (error) {
       console.error('Error fetching Adresa Data:', error);
     }
@@ -95,17 +96,27 @@ function FrmIzmeniKandidata() {
       console.error('Error fetching Drzava Data:', error);
     }
   };
-  useEffect(() => {
-    //ucitavanje kandidata
-    axios.get('/kandidat')
-      .then((response) => {
-        // prikaz
-        setCandidates(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching candidates:', error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   //ucitavanje kandidata
+  //   axios.get('/kandidat')
+  //     .then((response) => {
+  //       // prikaz
+  //       setCandidates(response.data);
+  //       console.log(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error fetching candidates:', error);
+  //     });
+  // }, []);
+
+  const fetchCandidates = async () => {
+    try {
+      const response = await axios.get('/kandidat');
+      setCandidates(response.data);
+    } catch (error) {
+      console.error('Error fetching candidates:', error);
+    }
+  };
 
   const handleCandidateClick = (candidate) => {
     console.log(candidate);
@@ -113,7 +124,7 @@ function FrmIzmeniKandidata() {
     setIme(candidate.Ime);
     setPrezime(candidate.Prezime);
     setJmbg(candidate.JMBG);
-    setZvanje(candidate.Zvanje);
+    setKontakt(candidate.Kontakt);
     setKucniBroj(candidate.kucniBroj);
     setSelectedDrzava(candidate.drzava_id);
     setSelectedGrad(candidate.grad_id);
@@ -140,7 +151,7 @@ function FrmIzmeniKandidata() {
         Ime: ime,
         Prezime: prezime,
         JMBG: jmbg,
-        Zvanje: zvanje,
+        Kontakt: kontakt,
         adresa_id: selectedAdresa,
         grad_id: selectedGrad,
         drzava_id: selectedDrzava,
@@ -151,6 +162,7 @@ function FrmIzmeniKandidata() {
       const response=await axios.put(`/kandidat/${selectedCandidate.id}`, updatedCandidate);
 if(response.status===201){
   alert('Kandidat uspešno izmenjen!');
+  fetchCandidates();
 }
   
      
@@ -184,7 +196,7 @@ if(response.status===201){
               <td>{candidate.Ime}</td>
               <td>{candidate.Prezime}</td>
               <td>{candidate.JMBG}</td>
-              <td>{candidate.Zvanje}</td>
+              <td>{candidate.Kontakt}</td>
             </tr>
           ))}
         </tbody>
@@ -223,8 +235,8 @@ if(response.status===201){
             <label>Kontakt:</label>
             <input
               type="text"
-              value={zvanje}
-              onChange={(e) => setZvanje(e.target.value)}
+              value={kontakt}
+              onChange={(e) => setKontakt(e.target.value)}
             />
           </div>
           </div>
@@ -242,7 +254,7 @@ if(response.status===201){
 </div>
           <div className="form-group">
             <label>Grad:</label>
-            <select onChange={(e) => setSelectedGrad(e.target.value)}>
+            <select onChange={(e) => setSelectedGrad(e.target.value)} value={selectedGrad}>
               <option value="">Izaberite grad</option>
               {gradovi.map((grad) => (
                 <option key={grad.id} value={grad.id}>
@@ -255,7 +267,7 @@ if(response.status===201){
           <div className='form-row'>
           <div className="form-group">
             <label>Ulica:</label>
-            <select onChange={(e) => setSelectedAdresa(e.target.value)}>
+            <select onChange={(e) => setSelectedAdresa(e.target.value)} value={selectedAdresa}>
               <option value="">Izaberite ulicu</option>
               {adrese.map((adresa) => (
                 <option key={adresa.id} value={adresa.id}>

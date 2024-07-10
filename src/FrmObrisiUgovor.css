@@ -10,7 +10,7 @@
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
     width: 70%;
     max-width: 600px;
-    margin: 0 auto;
+    margin: 10px auto 0px auto;
   }
   custom-button {
     background-color: #156cb459; /* Change to the color you prefer */

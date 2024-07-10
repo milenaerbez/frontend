@@ -71,7 +71,7 @@ const kandidatData = {
   Ime: ime,
   Prezime: prezime,
   JMBG: jmbg,
-  Zvanje: zvanje,
+  Kontakt: zvanje,
   adresa_id: selectedAdresa,
   grad_id: selectedGrad,
   drzava_id: selectedDrzava,
@@ -79,23 +79,23 @@ const kandidatData = {
   
  
 };
+
 const handleSacuvajClick = async () => {
   try {
-
-    const response= await axios.post('/kandidat', kandidatData);
-if(response.status===201){
-  alert('Uspesno '+response.data.message);
-}
-  
-  
+    const response = await axios.post('http://127.0.0.1:8000/api/kandidat', kandidatData);
+    console.log(response.data);
+    alert("Uspesno sacuvan kandidat");
     setIme("");
     setPrezime("");
     setJmbg("");
     setZvanje("");
     setKucniBroj("");
-    
   } catch (error) {
-    alert('Error kod cuvanja Kandidata',kandidatData, error);
+    if (error.response && error.response.data && error.response.data.message) {
+      alert(error.response.data.message);
+    } else {
+      alert('An unexpected error occurred');
+    }
   }
 };
 
@@ -103,7 +103,7 @@ if(response.status===201){
 
   return (
     <div className="container-kandidat">
-      <h2>Kreiranje Kandidata</h2>
+      <h2>Unos Kandidata</h2>
       <form>
         <div className='form-row'>
         <div className="form-group">
@@ -176,7 +176,7 @@ if(response.status===201){
   </select>
 </div>
 <div className="form-group">
-          <label>Kucni broj:</label>
+          <label>Kućni broj:</label>
           <input type="text"   value={kucniBroj}
   onChange={(e) => setKucniBroj(e.target.value)} />
         </div>

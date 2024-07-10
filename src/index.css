@@ -5,6 +5,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-image: url('./resource/newlogin.jpg');
+  background-size: cover;
+  /* background-attachment: fixed;  */
+  background-color:  #5f83a5c3;
 }
 
 code {
