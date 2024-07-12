@@ -82,7 +82,14 @@ const kandidatData = {
 
 const handleSacuvajClick = async () => {
   try {
-    const response = await axios.post('http://127.0.0.1:8000/api/kandidat', kandidatData);
+    const token = window.localStorage.getItem('auth_token'); 
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await axios.post('http://127.0.0.1:8000/api/kandidat', kandidatData, config);
     console.log(response.data);
     alert("Uspesno sacuvan kandidat");
     setIme("");

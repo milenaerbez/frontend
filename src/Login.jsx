@@ -45,25 +45,40 @@ function Login() {
 
     function handleLogin(e) {
        e.preventDefault();
-      axios
-        .post("login", userData, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-          }
-        })
-        .then((res) => {
-          console.log(res.data);
+       axios.post("login", userData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
+      })
+      .then((res) => {
+        console.log(res.data);
+        
+        if (res.data.success === false) {
+          alert("Neuspešan login: " + res.data.error);
+        } else {
           window.localStorage.setItem("auth_token", res.data.access_token);
-       
-          if (res.data.success === false) {
-           alert("Neuspesan login!");
-           
-          } else {
-            navigate("/homePage");
-          }
-        })
-        .catch((e) => console.log(e));
+          navigate("/homePage");
+        }
+      })
+      .catch((error) => {
+        if (error.response) {
+          // Server je vratio status kod van opsega 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+          alert("Neuspešan login: " + error.response.data.error);
+        } else if (error.request) {
+          // Zahtev je poslat, ali nema odgovora ili je greška u odgovoru
+          console.log(error.request);
+          alert("Neuspešan login: Server nije odgovorio.");
+        } else {
+          // Greška prilikom podešavanja zahteva
+          console.log('Error', error.message);
+          alert("Neuspešan login: Greška prilikom slanja zahteva.");
+        }
+        console.log(error.config);
+      });
     }
   return (
     <div className='wrapper'>

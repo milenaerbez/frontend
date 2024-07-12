@@ -56,14 +56,21 @@ function FrmIzmenaUgovora() {
 
 const pretrazi=async()=>{
   try{
+    const token = window.localStorage.getItem('auth_token');
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`, 
+      },
+    };
    if(kriterijum===''){
-    axios.get('/ugovor')
+    axios.get('/ugovor', config)
     .then((response) => {
       // prikaz
       setUgovori(response.data);
     })
    }
-const response=await axios.get(`/pretraga?jmbg=${kriterijum}`);
+const response=await axios.get(`/pretraga?jmbg=${kriterijum}`, config);
 setUgovori(response.data);
   }catch(error){
     console.log('error');
@@ -71,8 +78,15 @@ setUgovori(response.data);
 }
 
     useEffect(() => {
-        //ucitavanje kandidata
-        axios.get('/ugovor')
+      const token = window.localStorage.getItem('auth_token');
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`, 
+        },
+      };
+      
+        axios.get('/ugovor', config)
           .then((response) => {
             // prikaz
             setUgovori(response.data);
@@ -123,6 +137,14 @@ const removeStavka = (indexToRemove) => {
 
       const handleUpdateUgovor = async () => {
         try {
+          const token = window.localStorage.getItem('auth_token');
+          const config = {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`, 
+            },
+          };
+
           const updatedUgovor = {
           id:selektovanUgovor.id,
           sadrzaj:sadrzaj,
@@ -153,15 +175,16 @@ const removeStavka = (indexToRemove) => {
             addedStavke:nove
           };
       console.log(data);
+      
           ///put obavezno
-       const response=   await axios.put(`/ugovor/${selektovanUgovor.id}`, data);
+       const response=   await axios.put(`/ugovor/${selektovanUgovor.id}`, data, config);
           if(response.status===201){
             alert('Uspesno'+ response.data.message);
             fetchStavkeForSelectedUgovor(selektovanUgovor.id);
             setNoveStavke([]);
           }
         setSelektovanUgovor(null);
-        axios.get('/ugovor')
+        axios.get('/ugovor', config)
         .then((response) => {
           // prikaz
           setUgovori(response.data);
@@ -184,8 +207,15 @@ const removeStavka = (indexToRemove) => {
 
       const fetchStavkeForSelectedUgovor = async (selectedUgovorId) => {
         try {
+          const token = window.localStorage.getItem('auth_token');
+          const config = {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`, 
+            },
+          };
           if (selectedUgovorId) {
-            const response = await axios.get(`/stavke?selectedUgovorId=${selectedUgovorId}`);
+            const response = await axios.get(`/stavke?selectedUgovorId=${selectedUgovorId}`, config);
             setStavkeUgovora(response.data);
           } else {
             setStavkeUgovora([]);

@@ -39,25 +39,28 @@ const requestData = {
 const saveUgovorAndStavke = async (e) => {
   e.preventDefault();
 
-try {
-  const response = await axios.post('/ugovor', requestData);
-  if (response.status === 201) {
-   
-    alert('Uspesno: ' + response.data.message);
-  }   
-} catch (error) {
-  console.error('Error:', error);
-  if (error.response) {
-   
-    alert('Neuspesno: ' + error.response.data.message);
-  } else {
-   
-    alert('Neuspesno: Doslo je do greske prilikom slanja zahteva.');
-  }
-}
- 
+  const authToken = window.localStorage.getItem('auth_token');
 
-}
+  try {
+    const response = await axios.post('/ugovor', requestData, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        'Content-Type': 'application/json'     
+      }
+    });
+
+    if (response.status === 201) {
+      alert('Uspesno: ' + response.data.message);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    if (error.response) {
+      alert('Neuspesno: ' + error.response.data.message);
+    } else {
+      alert('Neuspesno: Doslo je do greske prilikom slanja zahteva.');
+    }
+  }
+};
 
  
 
@@ -88,7 +91,7 @@ useEffect(() => {
 
 useEffect(()=>{
   fetchZakone();
-},[]);
+}, []);
 
 useEffect(()=>{
   if(zakon){ fetchClanove(zakon);}

@@ -110,8 +110,15 @@ function FrmIzmeniKandidata() {
   // }, []);
 
   const fetchCandidates = async () => {
+    const token = window.localStorage.getItem('auth_token'); 
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
     try {
-      const response = await axios.get('/kandidat');
+      const response = await axios.get('/kandidat',config);
       setCandidates(response.data);
     } catch (error) {
       console.error('Error fetching candidates:', error);
@@ -157,16 +164,19 @@ function FrmIzmeniKandidata() {
         drzava_id: selectedDrzava,
         kucniBroj: kucniBroj,
       };
-  
+      const token = window.localStorage.getItem('auth_token'); 
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
       ///put obavezno
-      const response=await axios.put(`/kandidat/${selectedCandidate.id}`, updatedCandidate);
+      const response=await axios.put(`/kandidat/${selectedCandidate.id}`, updatedCandidate,config);
 if(response.status===201){
   alert('Kandidat uspešno izmenjen!');
   fetchCandidates();
-}
-  
-     
-      
+}    
     } catch (error) {
       alert('Error updating Kandidat:', error);
     }

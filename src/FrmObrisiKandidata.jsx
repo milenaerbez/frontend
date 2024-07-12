@@ -40,8 +40,14 @@ function FrmObrisiKandidata() {
 
 
   useEffect(() => {
-    
-    axios.get('/kandidat')
+    const token = window.localStorage.getItem('auth_token');
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`, 
+      },
+    };
+    axios.get('/kandidat', config)
       .then((response) => {
       
         setCandidates(response.data);
@@ -53,9 +59,15 @@ function FrmObrisiKandidata() {
 
   const handleRemoveCandidate = async (candidateId) => {
     try {
+      const token = window.localStorage.getItem('auth_token'); // Dobijanje JWT tokena iz localStorage-a
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`, // Postavljanje JWT tokena u Authorization zaglavlje
+        },
+      };
+    const response=  await axios.delete(`/kandidat/${candidateId}`, config);
     
-    const response=  await axios.delete(`/kandidat/${candidateId}`);
-      
       if(response.status===201){
         alert('Uspesno '+ response.data.message);
       }else if(response.status===500){

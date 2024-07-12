@@ -19,7 +19,7 @@ import {jwtDecode} from 'jwt-decode';
 function NavBar() {
   const [selectedOption, setSelectedOption] = useState(null);
   const navigate=  useNavigate();
-  // const role = window.sessionStorage.getItem("auth_token");
+  const role = window.sessionStorage.getItem("auth_token");
   const [rola, setRola] =useState(null);
   const handleOptionChange = (option) => {
     setSelectedOption(option);
@@ -47,7 +47,7 @@ function NavBar() {
     };
     axios(config).then((res) => {
       console.log(res.data);
-      window.localStorage.setItem("auth_token", null);
+      window.localStorage.removeItem("auth_token");
 
     });
     navigate("/login");
@@ -91,7 +91,7 @@ function NavBar() {
         <div className="menu-content">
           <ul className="menu-buttons">
             <li>
-              <button onClick={() => handleOptionChange('home')}>Početna</button>
+              <button onClick={() => handleOptionChange('home')}>Hello {rola}</button>
               {rola === 'admin' &&(
                   <>
                     <button onClick={() => handleOptionChange('kreirajkandidata')}>Kreiraj Kandidata</button>
@@ -102,14 +102,14 @@ function NavBar() {
                     <button onClick={() => handleOptionChange('izmeniugovor')}>Izmeni Ugovor</button>
                     <FaUserPlus color='white' size={20}onClick={ ()=> handleOptionChange('kreirajKorisnika')} cursor={'pointer'} style={{"margin-right":'20px'}}/>
                   </>
-                )}
-                {rola=== 'user' &&(
+                 )} 
+                 {rola=== 'user' &&(
                    <>
                      <button onClick={() => handleOptionChange('kreirajkandidata')}>Kreiraj Kandidata</button>
                      <button onClick={() => handleOptionChange('izmenikandidata')}>Izmeni Kandidata</button>
                      <button onClick={() => handleOptionChange('obrisikandidata')}>Obriši Kandidata</button>
                      </>
-                )}
+                )} 
     
               <HiOutlineLogout color='white' size={20} onClick={ handleLogout } cursor={'pointer'} />
            

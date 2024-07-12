@@ -11,7 +11,11 @@ useEffect(()=>{
 
 async function fetchUgovori() {
   try {
-    const response = await axios.get('/ugovor'); 
+    const authToken = window.localStorage.getItem('auth_token');
+    const response = await axios.get('/ugovor', {  headers: {
+      Authorization: `Bearer ${authToken}`,
+      'Content-Type': 'application/json'     
+    }  } ); 
     setUgovori(response.data);
   } catch (error) {
     console.error('Error fetching Ugovors:', error);
@@ -20,8 +24,15 @@ async function fetchUgovori() {
 
 const handleDeleteUgovor = async(ugovorid)=>{
 
+  const authToken = window.localStorage.getItem('auth_token');
+
 try{
- const response= await axios.delete(`/ugovor?ugovorid=${ugovorid}`);
+ const response= await axios.delete(`/ugovor?ugovorid=${ugovorid}`, {
+  headers: {
+    Authorization: `Bearer ${authToken}`,
+    'Content-Type': 'application/json'     
+  }
+});
 
 if(response.status===201){
   alert('Uspesno: '+response.data.message);
